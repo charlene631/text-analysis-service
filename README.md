@@ -73,3 +73,12 @@ Réponse :
 * séparer le code en modules,
 * ajouter Docker,
 * versionner avec Git.
+
+## Actions du système
+
+analyse brute du texte ✔️
+détection de structure CV ✔️
+détection de compétences ✔️
+détection de verbes d’action ✔️
+génération de recommandations conditionnelles ✔️
+API stable ✔️
