@@ -1,5 +1,23 @@
+from pypdf import PdfReader
+from io import BytesIO
+import re
+
+
+# -------------------------
+# CORE NORMALISATION
+# -------------------------
+def normalize(text: str):
+    text = text.lower()
+    text = re.sub(r"\s+", " ", text)
+    text = re.sub(r"[^\w\s]", " ", text)
+    return text
+
+
+# -------------------------
+# BASE ANALYSIS
+# -------------------------
 def analyze_base(text: str):
-    words = text.split()
+    words = normalize(text).split()
     return {
         "length": len(text),
         "word_count": len(words),
@@ -7,6 +25,9 @@ def analyze_base(text: str):
     }
 
 
+# -------------------------
+# CV ANALYSIS
+# -------------------------
 def analyze_cv(text: str):
     base = analyze_base(text)
     structure = detect_sections(text)
@@ -20,17 +41,16 @@ def analyze_cv(text: str):
     )
 
     global_score = compute_global_score(
-    structure["structure_score"],
-    skills["skills_count"],
-    actions["action_score"]
-)
+        structure["structure_score"],
+        skills["skills_count"],
+        actions["action_score"]
+    )
 
     return {
         **base,
         **structure,
         **skills,
         **actions,
-
         "type": "cv",
         "clarity_score": min(100, len(text.split()) * 2),
         "suggestions": suggestions,
@@ -38,10 +58,14 @@ def analyze_cv(text: str):
     }
 
 
+# -------------------------
+# LINKEDIN ANALYSIS
+# -------------------------
 def analyze_linkedin(text: str):
     base = analyze_base(text)
     structure = detect_sections(text)
     skills = detect_skills(text)
+
     return {
         **base,
         **structure,
@@ -55,50 +79,81 @@ def analyze_linkedin(text: str):
         ]
     }
 
+
+# -------------------------
+# SECTIONS DETECTION
+# -------------------------
 def detect_sections(text: str):
-    sections = ["experience", "formation", "skills", "compétences", "education"]
+    sections = [
+        "experience", "experiences", "parcours",
+        "formation", "formations",
+        "competences", "compétences",
+        "skills", "education", "profil"
+    ]
 
-    lower = text.lower()
+    clean = normalize(text)
 
-    found = [s for s in sections if s in lower]
+    found = [s for s in sections if s in clean]
 
     return {
         "sections_found": found,
         "structure_score": min(100, len(found) * 25)
     }
 
+
+# -------------------------
+# SKILLS DETECTION (élargie)
+# -------------------------
 def detect_skills(text: str):
     skills = [
         "python", "fastapi", "sql", "docker",
         "git", "javascript", "react",
-        "html", "css", "mysql", "mongodb"
+        "html", "css", "mysql", "mongodb",
+        "informatique", "reseau", "systeme",
+        "support", "maintenance", "developpement",
+        "linux", "api"
     ]
 
-    lower = text.lower()
+    clean = normalize(text)
 
-    found = [skill for skill in skills if skill in lower]
+    found = [skill for skill in skills if skill in clean]
 
     return {
         "skills_found": found,
         "skills_count": len(found)
     }
 
+
+# -------------------------
+# ACTION VERBS
+# -------------------------
 def detect_action_verbs(text: str):
     verbs = [
-        "développé", "conçu", "créé", "géré",
-        "piloté", "optimisé", "automatisé",
-        "réalisé", "implémenté", "coordonné"
-    ]
+    "developp",   # capture développé / développement / developper
+    "concep",     # conçu / conception
+    "cre",        # créé / creation
+    "ger",        # géré / gestion
+    "pilot",      # pilotage
+    "optimis",    # optimisation
+    "realis",     # réalisé
+    "implement",  # implémenté
+    "deploy",     # déployé
+    "adminis"
+]
 
-    lower = text.lower()
+    clean = normalize(text)
 
-    found = [verb for verb in verbs if verb in lower]
+    found = [verb for verb in verbs if verb in clean]
 
     return {
         "action_verbs_found": found,
         "action_score": min(100, len(found) * 20)
     }
 
+
+# -------------------------
+# SUGGESTIONS
+# -------------------------
 def generate_cv_suggestions(structure_score, skills_count, action_score):
     suggestions = []
 
@@ -116,6 +171,10 @@ def generate_cv_suggestions(structure_score, skills_count, action_score):
 
     return suggestions
 
+
+# -------------------------
+# SCORE GLOBAL
+# -------------------------
 def compute_global_score(structure_score, skills_count, action_score):
     skills_score = min(100, skills_count * 20)
 
@@ -126,3 +185,34 @@ def compute_global_score(structure_score, skills_count, action_score):
     )
 
     return round(global_score)
+
+
+# -------------------------
+# PDF CLEANING
+# -------------------------
+def clean_pdf_text(text: str):
+    # 1. enlève sauts de ligne
+    text = text.replace("\n", " ")
+
+    # 2. reconstruit mots espacés type "C O M P É T E N C E S"
+    text = re.sub(r"(?:(?:\b\w\b\s+){3,})", lambda m: m.group(0).replace(" ", ""), text)
+
+    # 3. normalise espaces
+    text = re.sub(r"\s+", " ", text)
+
+    return text.strip()
+
+
+# -------------------------
+# PDF EXTRACTION
+# -------------------------
+def extract_text_from_pdf(file_bytes: bytes):
+    reader = PdfReader(BytesIO(file_bytes))
+
+    text = ""
+    for page in reader.pages:
+        page_text = page.extract_text() or ""
+        text += page_text.replace("\n", " ")
+
+    # IMPORTANT : on nettoie ici UNE SEULE FOIS
+    return clean_pdf_text(text)

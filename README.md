@@ -82,3 +82,10 @@ détection de compétences ✔️
 détection de verbes d’action ✔️
 génération de recommandations conditionnelles ✔️
 API stable ✔️
+
+ingestion PDF ✔️
+nettoyage ✔️
+extraction features ✔️
+scoring ✔️
+suggestion engine ✔️
+
