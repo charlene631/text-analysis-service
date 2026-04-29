@@ -74,18 +74,23 @@ Réponse :
 * ajouter Docker,
 * versionner avec Git.
 
-## Actions du système
+## Actions du système du mini service SaaS CV analyzer
 
-analyse brute du texte ✔️
-détection de structure CV ✔️
-détection de compétences ✔️
-détection de verbes d’action ✔️
-génération de recommandations conditionnelles ✔️
-API stable ✔️
+1. ingestion PDF ✔️
+2. parsing texte ✔️
+3. normalisation ✔️
+4. extraction skills ✔️
+5. scoring multi-axes ✔️
+6. API REST propre ✔️
+7. réponse frontend-ready ✔️
 
-ingestion PDF ✔️
-nettoyage ✔️
-extraction features ✔️
-scoring ✔️
-suggestion engine ✔️
+## Améliorations à faire
+
+- Action verbs partiel
+- Keywords bruités
+- NLP simple
+
+## Prochaine étape 
+
+UX produit
 
