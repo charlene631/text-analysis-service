@@ -1,13 +1,10 @@
 from fastapi import FastAPI
+from app.routes import analysis
 
-app = FastAPI()
+app = FastAPI(title="Text Analysis Service")
 
-@app.post("/analyze")
-def analyze(data: dict):
-    text = data["text"]
-    words = text.split()
+app.include_router(analysis.router)
 
-    return {
-        "word_count": len(words),
-"keywords": words
-    }
+@app.get("/")
+def root():
+    return {"status": "ok"}
