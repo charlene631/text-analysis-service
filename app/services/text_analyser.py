@@ -46,7 +46,7 @@ def analyze_cv(text: str):
         actions["action_score"]
     )
 
-    return {
+    result = {
         **base,
         **structure,
         **skills,
@@ -56,6 +56,8 @@ def analyze_cv(text: str):
         "suggestions": suggestions,
         "global_score": global_score
     }
+
+    return format_cv_response(result)
 
 
 # -------------------------
@@ -216,3 +218,27 @@ def extract_text_from_pdf(file_bytes: bytes):
 
     # IMPORTANT : on nettoie ici UNE SEULE FOIS
     return clean_pdf_text(text)
+
+def format_cv_response(result: dict):
+    return {
+        "summary": {
+            "global_score": result["global_score"],
+            "structure_score": result["structure_score"],
+            "skills_score": result["skills_count"] * 10,
+            "action_score": result["action_score"],
+        },
+
+        "analysis": {
+            "sections_found": result["sections_found"],
+            "skills_found": result["skills_found"],
+            "action_verbs_found": result["action_verbs_found"],
+        },
+
+        "insights": result["suggestions"],
+
+        "meta": {
+            "type": result["type"],
+            "length": result["length"],
+            "word_count": result["word_count"]
+        }
+    }
