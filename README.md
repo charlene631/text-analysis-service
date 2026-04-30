@@ -1,96 +1,209 @@
 # Text Analysis Service
 
-## Objectif
+Microservice FastAPI open source pour analyser des documents textuels.
 
-Créer un microservice backend capable de recevoir un texte et de renvoyer une analyse simple.
+La première spécialisation du projet est l’analyse de CV au format PDF. Le service extrait le texte, le normalise, détecte des éléments clés, calcule plusieurs scores et retourne une réponse prête à être utilisée par un frontend React.
 
-La première version de l’API renvoie :
+## Fonctionnalités actuelles
 
-* le nombre de mots,
-* les mots détectés.
+- Upload de CV au format PDF
+- Extraction du texte avec `pypdf`
+- Nettoyage et normalisation du texte
+- Détection des sections clés
+- Détection des compétences techniques
+- Détection de verbes d’action
+- Scoring multi-axes
+- Validation du type de fichier PDF
+- Limite de taille d’upload
+- Gestion des PDF vides ou illisibles
+- Réponse API structurée pour dashboard frontend
+- Endpoint expérimental pour analyse de contenu LinkedIn
 
-Ce service servira ensuite de base pour analyser des CV ou d’autres contenus textuels.
+## Stack
 
----
+### Backend
 
-## Stack utilisée
+- Python 3.8
+- FastAPI
+- Pydantic
+- Uvicorn
+- pypdf
+- python-dotenv
+- pytest
 
-* Python
-* FastAPI
-* Uvicorn
+### Frontend
 
----
+- React
+- Vite
 
-## Lancer le projet
+## Architecture backend
 
-Activer l’environnement virtuel :
-
-```bash id="m1q7vn"
-source venv/bin/activate
+```text
+app/
+├── core/
+│   └── config.py
+├── data/
+│   ├── action_verbs.py
+│   ├── sections.py
+│   └── skills.py
+├── routes/
+│   └── analysis.py
+├── schemas/
+│   └── analysis_schema.py
+├── services/
+│   ├── cv_analyzer.py
+│   ├── linkedin_analyzer.py
+│   ├── pdf_extractor.py
+│   ├── scoring.py
+│   └── text_normalizer.py
+└── main.py
 ```
 
-Lancer le serveur :
+## Installation backend
 
-```bash id="f8r2kt"
+Depuis la racine du projet :
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+## Configuration
+
+Créer un fichier `.env` à la racine du projet :
+
+```env
+FRONTEND_URL=http://localhost:5173
+```
+
+Ne jamais commiter un fichier `.env` contenant des secrets. Pour un projet open source, préférer un fichier `.env.example`.
+
+## Lancer le backend
+
+```bash
+source venv/bin/activate
 uvicorn main:app --reload
 ```
 
 Documentation interactive :
 
-```text id="v6n3px"
+```text
 http://127.0.0.1:8000/docs
 ```
 
----
+## Lancer le frontend
 
-## Endpoint actuel
+Depuis le dossier `frontend` :
 
-### POST `/analyze`
+```bash
+npm install
+npm run dev
+```
 
-Exemple :
+URL par défaut :
 
-```json id="u9k4zr"
-{
-  "text": "Python Docker API"
-}
+```text
+http://localhost:5173
+```
+
+## Endpoints
+
+### Health check
+
+```http
+GET /
 ```
 
 Réponse :
 
-```json id="x2m8lc"
+```json
 {
-  "word_count": 3,
-  "keywords": ["python", "docker", "api"]
+  "status": "ok",
+  "service": "Text Analysis Service",
+  "version": "0.1.0"
 }
 ```
 
----
+### Analyse CV PDF
 
-## Prochaines étapes
+```http
+POST /analyze/cv/pdf
+```
 
-* filtrer les mots inutiles,
-* calculer un score,
-* séparer le code en modules,
-* ajouter Docker,
-* versionner avec Git.
+Body : fichier PDF via `multipart/form-data`.
 
-## Actions du système du mini service SaaS CV analyzer
+Réponse exemple :
 
-1. ingestion PDF ✔️
-2. parsing texte ✔️
-3. normalisation ✔️
-4. extraction skills ✔️
-5. scoring multi-axes ✔️
-6. API REST propre ✔️
-7. réponse frontend-ready ✔️
+```json
+{
+  "summary": {
+    "global_score": 72,
+    "structure_score": 75,
+    "skills_score": 80,
+    "action_score": 60
+  },
+  "analysis": {
+    "sections_found": ["experience", "formation", "competences"],
+    "skills_found": ["python", "fastapi", "react"],
+    "action_verbs_found": ["developp", "cre", "deploy"]
+  },
+  "insights": [
+    "CV bien structuré et pertinent."
+  ],
+  "meta": {
+    "type": "cv",
+    "length": 2450,
+    "word_count": 380
+  }
+}
+```
 
-## Améliorations à faire
+### Analyse LinkedIn PDF
 
-- Action verbs partiel
-- Keywords bruités
-- NLP simple
+```http
+POST /analyze/linkedin/pdf
+```
 
-## Prochaine étape 
+Body : fichier PDF via `multipart/form-data`.
 
-UX produit
+## Tests
 
+Lancer les tests backend depuis la racine du projet :
+
+```bash
+source venv/bin/activate
+PYTHONPATH=. pytest
+```
+
+Statut actuel :
+
+```text
+8 passed
+```
+
+## Roadmap
+
+### Court terme
+
+- Ajouter un endpoint `/health`
+- Ajouter des tests sur les routes FastAPI
+- Améliorer la détection des compétences
+- Réduire les faux positifs sur les mots-clés
+- Ajouter une analyse de texte brut, sans PDF
+
+### Moyen terme
+
+- Ajouter une analyse plus fine des expériences
+- Ajouter un score de lisibilité
+- Ajouter un score d’adéquation avec une offre d’emploi
+- Ajouter une analyse de posts LinkedIn
+- Ajouter Docker
+
+### Long terme
+
+- Ajouter authentification utilisateur
+- Ajouter historique des analyses
+- Ajouter dashboard SaaS
+- Ajouter export PDF du rapport
+- Ajouter base de données
