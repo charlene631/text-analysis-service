@@ -44,8 +44,13 @@ def detect_skills(text: str) -> dict:
 
 def detect_action_verbs(text: str) -> dict:
     clean = normalize_text(text)
-    found = [verb for verb in ACTION_VERBS if verb in clean]
 
+    found = []
+
+    for verb in ACTION_VERBS:
+        if any(pattern in clean for pattern in verb["patterns"]):
+            found.append(verb["label"])
+    
     return {
         "action_verbs_found": found,
         "action_score": compute_action_score(len(found)),
