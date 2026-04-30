@@ -1,21 +1,7 @@
-SKILLS = [
-    "python",
-    "fastapi",
-    "sql",
-    "docker",
-    "git",
-    "javascript",
-    "react",
-    "html",
-    "css",
-    "mysql",
-    "mongodb",
-    "informatique",
-    "reseau",
-    "systeme",
-    "support",
-    "maintenance",
-    "developpement",
-    "linux",
-    "api",
-]
+SKILLS = {
+    "backend": ["python", "fastapi", "api"],
+    "frontend": ["javascript", "react", "html", "css"],
+    "database": ["sql", "mysql", "mongodb"],
+    "devops": ["docker", "git", "linux"],
+    "support": ["informatique", "support", "maintenance", "reseau", "systeme"],
+}

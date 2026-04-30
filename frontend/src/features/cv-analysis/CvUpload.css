@@ -1,0 +1,59 @@
+.cv-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.cv-upload__title {
+  margin: 0;
+  color: #111827;
+  font-size: 20px;
+}
+
+.cv-upload__description {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.cv-upload__file-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px dashed #9ca3af;
+  border-radius: 8px;
+  background: #f9fafb;
+  color: #374151;
+  cursor: pointer;
+}
+
+.cv-upload__hidden-input {
+  display: none;
+}
+
+.cv-upload__button {
+  height: 44px;
+  border: none;
+  border-radius: 8px;
+  background: #111827;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cv-upload__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cv-upload__error {
+  margin: 0;
+  color: #b91c1c;
+  font-size: 14px;
+}

@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from typing import List, Literal
+from typing import Dict, List
+from typing import Literal
 
 
 class AnalysisSummary(BaseModel):
@@ -12,6 +13,7 @@ class AnalysisSummary(BaseModel):
 class AnalysisDetails(BaseModel):
     sections_found: List[str]
     skills_found: List[str]
+    skills_by_category: Dict[str, List[str]]
     action_verbs_found: List[str]
 
 
@@ -33,3 +35,6 @@ class LinkedinAnalysisResponse(BaseModel):
     analysis: AnalysisDetails
     insights: List[str]
     meta: AnalysisMeta
+
+class TextAnalysisRequest(BaseModel):
+    text: str

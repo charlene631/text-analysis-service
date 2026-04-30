@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.routes.analysis import router as analysis_router
+from app.routes.health import router as health_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -18,7 +19,7 @@ app.add_middleware(
 )
 
 app.include_router(analysis_router)
-
+app.include_router(health_router)
 
 @app.get("/")
 def root():

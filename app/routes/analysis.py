@@ -1,6 +1,6 @@
 from fastapi import APIRouter, File, HTTPException, UploadFile, status
 
-from app.schemas.analysis_schema import CvAnalysisResponse, LinkedinAnalysisResponse
+from app.schemas.analysis_schema import CvAnalysisResponse, LinkedinAnalysisResponse, TextAnalysisRequest
 from app.services.cv_analyzer import analyze_cv
 from app.services.linkedin_analyzer import analyze_linkedin
 from app.services.pdf_extractor import extract_text_from_pdf
@@ -41,3 +41,8 @@ async def analyze_linkedin_route(file: UploadFile = File(...)):
     text = extract_text_from_pdf(file_bytes)
 
     return analyze_linkedin(text)
+
+@router.post("/linkedin/text", response_model=LinkedinAnalysisResponse)
+async def analyze_linkedin_text_route(payload: TextAnalysisRequest):
+    return analyze_linkedin(payload.text)
+

@@ -33,12 +33,20 @@ def detect_sections(text: str) -> dict:
 
 def detect_skills(text: str) -> dict:
     clean = normalize_text(text)
-    found = [skill for skill in SKILLS if skill in clean]
+
+    skills_by_category = {}
+    skills_found = []
+
+    for category, skills in SKILLS.items():
+        detected_skills = [skill for skill in skills if skill in clean]
+        skills_by_category[category] = detected_skills
+        skills_found.extend(detected_skills)
 
     return {
-        "skills_found": found,
-        "skills_count": len(found),
-        "skills_score": compute_skills_score(len(found)),
+        "skills_found": skills_found,
+        "skills_by_category": skills_by_category,
+        "skills_count": len(skills_found),
+        "skills_score": compute_skills_score(len(skills_found)),
     }
 
 
@@ -50,7 +58,7 @@ def detect_action_verbs(text: str) -> dict:
     for verb in ACTION_VERBS:
         if any(pattern in clean for pattern in verb["patterns"]):
             found.append(verb["label"])
-    
+
     return {
         "action_verbs_found": found,
         "action_score": compute_action_score(len(found)),
@@ -107,6 +115,7 @@ def analyze_cv(text: str) -> dict:
         "analysis": {
             "sections_found": structure["sections_found"],
             "skills_found": skills["skills_found"],
+            "skills_by_category": skills["skills_by_category"],
             "action_verbs_found": actions["action_verbs_found"],
         },
         "insights": suggestions,
