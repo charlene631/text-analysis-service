@@ -1,4 +1,5 @@
 import re
+import unicodedata
 
 
 def normalize_text(text: str) -> str:
@@ -17,3 +18,11 @@ def clean_pdf_text(text: str) -> str:
     )
     text = re.sub(r"\s+", " ", text)
     return text.strip()
+
+def remove_accents(text: str) -> str:
+    normalized_text = unicodedata.normalize("NFD", text)
+    return "".join(
+        char for char in normalized_text
+        if unicodedata.category(char) != "Mn"
+    )
+

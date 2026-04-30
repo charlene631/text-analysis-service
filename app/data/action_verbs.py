@@ -39,4 +39,30 @@ ACTION_VERBS = [
         "label": "administrer",
         "patterns": ["adminis"],
     },
+
+    {
+    "label": "rédiger",
+    "patterns": ["redaction", "rédaction", "rediger", "rédiger"],
+},
+{
+    "label": "refondre",
+    "patterns": ["refonte", "refondre"],
+},
+{
+    "label": "valider",
+    "patterns": ["validation", "valider"],
+},
+{
+    "label": "identifier",
+    "patterns": ["identification", "identifier"],
+},
+{
+    "label": "installer",
+    "patterns": ["installation", "installer"],
+},
+{
+    "label": "sécuriser",
+    "patterns": ["securisee", "sécurisée", "securiser", "sécuriser"],
+},
+
 ]
