@@ -1,10 +1,5 @@
-import CvUpload from "./CvUpload";
+import CvAnalysisPage from "./pages/CvAnalysisPage";
 
 export default function App() {
-  return (
-    <div>
-      <h1>Analyse CV</h1>
-      <CvUpload />
-    </div>
-  );
+  return <CvAnalysisPage />;
 }

@@ -1,20 +1,21 @@
 import { useState } from "react";
-import axios from "axios";
+import { api } from "../../api/client";
 
-export default function CvUpload() {
+export default function CvUpload({ onResult }) {
   const [file, setFile] = useState(null);
-  const [result, setResult] = useState(null);
 
   const handleUpload = async () => {
+    if (!file) return;
+
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await axios.post(
-      "http://127.0.0.1:8000/analyze/cv/pdf",
+    const { data } = await api.post(
+      "/analyze/cv/pdf",
       formData
     );
 
-    setResult(res.data);
+    onResult(data);
   };
 
   return (
@@ -28,12 +29,6 @@ export default function CvUpload() {
       <button onClick={handleUpload}>
         Analyser CV
       </button>
-
-      {result && (
-        <pre>
-          {JSON.stringify(result, null, 2)}
-        </pre>
-      )}
     </div>
   );
 }
