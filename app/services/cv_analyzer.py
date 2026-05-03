@@ -112,17 +112,33 @@ def generate_cv_suggestions(
 ) -> List[str]:
     suggestions = []
 
-    if structure_score < 50:
-        suggestions.append("Ajoutez des sections claires : expérience, compétences, formation.")
+    if structure_score < 70:
+        suggestions.append(
+            "Structurez davantage le CV avec des sections immédiatement identifiables : profil, expériences, formation, compétences et projets."
+        )
 
-    if skills_count < 3:
-        suggestions.append("Ajoutez davantage de compétences techniques visibles.")
+    if skills_count < 8:
+        suggestions.append(
+            "Rendez les compétences techniques plus visibles dans une section dédiée ou dans les descriptions de projets."
+        )
+    elif skills_count < 14:
+        suggestions.append(
+            "Les compétences sont présentes, mais certaines technologies clés pourraient être mises plus en avant."
+        )
 
-    if action_score < 40:
-        suggestions.append("Utilisez plus de verbes d’action pour valoriser vos expériences.")
+    if action_score < 60:
+        suggestions.append(
+            "Ajoutez davantage de verbes d’action pour mieux valoriser vos réalisations : concevoir, développer, déployer, automatiser, sécuriser, optimiser."
+        )
+    elif action_score < 80:
+        suggestions.append(
+            "Les actions sont visibles, mais vous pouvez encore renforcer l’impact avec plus de résultats mesurables."
+        )
 
-    if not suggestions:
-        suggestions.append("CV bien structuré et pertinent.")
+    if skills_count >= 14 and structure_score >= 80 and action_score >= 70:
+        suggestions.append(
+            "CV solide : les compétences, la structure et les actions sont globalement bien représentées."
+        )
 
     return suggestions
 

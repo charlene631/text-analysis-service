@@ -4,7 +4,13 @@ export default function CvDashboard({ data }) {
   if (!data) return null;
 
   const { summary, analysis, insights, meta } = data;
-  const skillsByCategory = analysis.skills_by_category || {};
+  const rawSkillsByCategory = analysis.skills_by_category || {};
+
+const visibleSkillsByCategory = Object.fromEntries(
+  Object.entries(rawSkillsByCategory).filter(
+    ([, skills]) => Array.isArray(skills) && skills.length > 0
+  )
+);
 
   const metrics = [
     {
@@ -63,9 +69,9 @@ export default function CvDashboard({ data }) {
       <div className="cv-dashboard__panel">
         <h3 className="cv-dashboard__panel-title">Compétences détectées</h3>
 
-        {Object.keys(skillsByCategory).length > 0 ? (
+        {Object.keys(visibleSkillsByCategory).length > 0 ? (
           <div className="cv-dashboard__skill-groups">
-            {Object.entries(skillsByCategory).map(([category, skills]) => (
+            {Object.entries(visibleSkillsByCategory).map(([category, skills]) => (
               <div key={category} className="cv-dashboard__skill-group">
                 <h4 className="cv-dashboard__skill-category">{category}</h4>
 

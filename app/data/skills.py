@@ -7,14 +7,17 @@ SKILLS = {
         {
             "label": "FastAPI",
             "aliases": ["fastapi", "fast api"],
+            "match": "compact",
         },
         {
             "label": "Node.js",
             "aliases": ["node.js", "node js", "nodejs", "node j s"],
+            "match": "compact",
         },
         {
             "label": "Express.js",
             "aliases": ["express", "express.js", "express js"],
+            "match": "compact",
         },
         {
             "label": "API REST",
@@ -94,6 +97,7 @@ SKILLS = {
         {
             "label": "React",
             "aliases": ["react", "react.js", "reactjs"],
+            "match": "compact",
         },
         {
             "label": "Vite",
@@ -144,6 +148,7 @@ SKILLS = {
         {
             "label": "MongoDB",
             "aliases": ["mongodb", "mongo db"],
+            "match": "compact",
         },
         {
             "label": "SQL",
