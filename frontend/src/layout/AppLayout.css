@@ -1,0 +1,94 @@
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.app-layout__container {
+  width: min(100% - 48px, 1120px);
+  margin: 0 auto;
+}
+
+.app-layout__header {
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.app-layout__header-inner {
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.app-layout__eyebrow {
+  margin: 0;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.app-layout__brand {
+  margin: 4px 0 0;
+  color: #111827;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.app-layout__main {
+  flex: 1;
+  padding-top: 32px;
+  padding-bottom: 48px;
+}
+
+.app-layout__footer {
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.app-layout__footer-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 22px;
+  padding-bottom: 22px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.app-layout__footer strong {
+  color: #111827;
+}
+
+.app-layout__footer p {
+  max-width: 640px;
+  margin: 6px 0 0;
+}
+
+.app-layout__footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.app-layout__footer-links a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.app-layout__footer-links a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 720px) {
+  .app-layout__container {
+    width: min(100% - 32px, 1120px);
+  }
+
+  .app-layout__footer-inner {
+    flex-direction: column;
+  }
+}
