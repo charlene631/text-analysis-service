@@ -4,6 +4,8 @@ Microservice FastAPI open source pour analyser des documents textuels.
 
 La première spécialisation du projet est l’analyse de CV au format PDF. Le service extrait le texte, le normalise, détecte des éléments clés, calcule plusieurs scores et retourne une réponse prête à être utilisée par un frontend React.
 
+---
+
 ## Fonctionnalités actuelles
 
 - Upload de CV au format PDF
@@ -11,7 +13,7 @@ La première spécialisation du projet est l’analyse de CV au format PDF. Le s
 - Nettoyage et normalisation du texte
 - Détection des sections clés
 - Détection des compétences techniques
-- Détection de verbes d’action
+- Détection des verbes d’action
 - Scoring multi-axes
 - Validation du type de fichier PDF
 - Limite de taille d’upload
@@ -19,10 +21,11 @@ La première spécialisation du projet est l’analyse de CV au format PDF. Le s
 - Réponse API structurée pour dashboard frontend
 - Endpoint expérimental pour analyse de contenu LinkedIn
 
+---
+
 ## Stack
 
 ### Backend
-
 - Python 3.8
 - FastAPI
 - Pydantic
@@ -32,32 +35,70 @@ La première spécialisation du projet est l’analyse de CV au format PDF. Le s
 - pytest
 
 ### Frontend
-
 - React
 - Vite
+
+---
 
 ## Architecture backend
 
 ```text
-app/
-├── core/
-│   └── config.py
-├── data/
-│   ├── action_verbs.py
-│   ├── sections.py
-│   └── skills.py
-├── routes/
-│   └── analysis.py
-├── schemas/
-│   └── analysis_schema.py
-├── services/
-│   ├── cv_analyzer.py
-│   ├── linkedin_analyzer.py
-│   ├── pdf_extractor.py
-│   ├── scoring.py
-│   └── text_normalizer.py
-└── main.py
+├── Dockerfile
+├── README.md
+├── app
+│   ├── core
+│   │   └── config.py
+│   ├── data
+│   │   ├── action_verbs.py
+│   │   ├── sections.py
+│   │   └── skills.py
+│   ├── routes
+│   │   ├── analysis.py
+│   │   └── health.py
+│   ├── schemas
+│   │   ├── analysis_schema.py
+│   │   └── health_schema.py
+│   └── services
+│       ├── cv_analyzer.py
+│       ├── linkedin_analyzer.py
+│       ├── pdf_extractor.py
+│       ├── scoring.py
+│       ├── text_analyser.py
+│       └── text_normalizer.py
+├── docker-compose.yml
+├── frontend
+│   ├── Dockerfile
+│   ├── README.md
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   │   ├── favicon.svg
+│   │   └── icons.svg
+│   ├── src
+│   │   ├── App.css
+│   │   ├── App.jsx
+│   │   ├── api
+│   │   ├── assets
+│   │   ├── features
+│   │   ├── index.css
+│   │   ├── layout
+│   │   ├── main.jsx
+│   │   └── pages
+│   └── vite.config.js
+├── main.py
+├── requirements.txt
+└── tests
+    ├── test_cv_analyzer.py
+    ├── test_health.py
+    ├── test_scoring.py
+    └── test_text_normalizer.py
 ```
+
+Commande pour afficher l'état actuel du dossier:
+
+tree -L 3 -I "venv|__pycache__|node_modules"
 
 ## Installation backend
 
@@ -88,7 +129,7 @@ uvicorn main:app --reload
 
 Documentation interactive :
 
-```text
+```
 http://127.0.0.1:8000/docs
 ```
 
@@ -103,7 +144,7 @@ npm run dev
 
 URL par défaut :
 
-```text
+```
 http://localhost:5173
 ```
 
@@ -253,10 +294,7 @@ Statut actuel :
 
 ### Court terme
 
-- Ajouter un endpoint `/health`
 - Ajouter des tests sur les routes FastAPI
-- Améliorer la détection des compétences
-- Réduire les faux positifs sur les mots-clés
 - Ajouter une analyse de texte brut, sans PDF
 
 ### Moyen terme
@@ -265,7 +303,7 @@ Statut actuel :
 - Ajouter un score de lisibilité
 - Ajouter un score d’adéquation avec une offre d’emploi
 - Ajouter une analyse de posts LinkedIn
-- Ajouter Docker
+- Ajouter Docker amélioré (optimisation images)
 
 ### Long terme
 
