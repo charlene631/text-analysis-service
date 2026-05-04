@@ -107,6 +107,73 @@ URL par défaut :
 http://localhost:5173
 ```
 
+## Lancer le projet avec Docker
+
+Le projet peut être lancé avec Docker Compose afin de démarrer le backend FastAPI et le frontend React avec une seule commande.
+
+### Prérequis
+
+- Docker
+- Docker Compose
+
+### Démarrage
+
+Depuis la racine du projet :
+
+```bash
+docker compose up --build
+```
+
+Une fois les containers lancés :
+
+```text
+Frontend : http://localhost:5173
+Backend  : http://localhost:8000
+Swagger  : http://localhost:8000/docs
+```
+
+### Arrêter les containers
+
+Dans le terminal où Docker Compose est lancé :
+
+```bash
+Ctrl + C
+```
+
+Ou depuis la racine du projet :
+
+```bash
+docker compose down
+```
+
+### Vérifier les containers actifs
+
+```bash
+docker compose ps
+```
+
+Ou :
+
+```bash
+docker ps
+```
+
+### Notes de développement
+
+Docker est utilisé ici pour fournir un environnement de développement reproductible.
+
+Le code reste modifiable localement dans VS Code. Les volumes Docker permettent de refléter les changements du code dans les containers pendant le développement.
+
+Les fichiers `.env`, les environnements virtuels Python, les dépendances locales et les dossiers de build ne doivent pas être copiés dans les images Docker. Ils sont exclus via `.dockerignore`.
+
+### Variables d’environnement Docker
+
+Le `docker-compose.yml` configure les variables nécessaires au développement local :
+
+```yaml
+FRONTEND_URL=http://localhost:5173
+VITE_API_URL=http://localhost:8000
+```
 ## Endpoints
 
 ### Health check
